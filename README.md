@@ -1,3 +1,3 @@
-Projeto Liberai- Propriedade da SCA Tech.
-Autoria João Lima e Davi Matos.
+Projeto Liberai- Propriedade da SCA Tech. <br>
+Autoria João Lima e Davi Matos. <br>
 Todos os direitos reservados.
