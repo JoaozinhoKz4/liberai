@@ -14,7 +14,7 @@ def salvar_faces_conhecidas():  # Define a função que salva os encodings e os 
         pickle.dump(face_data, face_data_file) #pickle é um módulo para manipulação de binários em python
         print("Backup realizado.")
 
-def carregar_faces_conhecidas(): # Define a função que carrega do backup os dados de codificação facial e metadados
+def carregar_faces_conhecidas(): # Define a função que carrega da base de dados a codificação facial e os metadados faciais
     global know_face_encodings, know_face_metadata
 
     try: # tenta abrir o arquivo
@@ -28,3 +28,10 @@ def carregar_faces_conhecidas(): # Define a função que carrega do backup os da
 def registrar_nova_face(face_encoding, face_image): # Adiciona nova pessoa a nossa lista de faces conhecidas
     
     know_face_encodings.append(face_encoding) #Adiciona a codificação do facial ao vetor de codificações global.
+
+    know_face_metadata.append({
+        "Data do cadastro": datetime.now(),
+        "face_image": face_image,
+        "Matrícula": matricula,
+        "Nome": nome_aluno,
+    })
