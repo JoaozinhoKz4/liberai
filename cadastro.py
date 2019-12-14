@@ -59,3 +59,40 @@ def lookup_known_face(face_encoding):
 def main_loop():
 
     video_capture = cv2.VideoCapture(0)
+
+    while True:
+        
+        ret, frame = video_capture.read()
+
+        small_frame = cv2.resize(frame, (0,0), fx=0.25, fy=0.25)
+
+        rgb_small_frame = small_frame [:,:,::-1]
+
+        face_locations = face_recognition.face_locations(rgb_small_frame)
+        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+        face_labels = []
+
+        for face_location, face_encoding in zip(face_locations, face_encodings):
+            
+            metadata = lookup_known_face(face_encoding)
+
+            
+            if metadata is not None:
+                
+                face_label= metadata['nome']
+
+            
+            else:
+                face_label = "Desconhecido"
+
+                top, right, bottom, left = face_location
+                face_image = small_frame[top:bottom, left:right]
+                face_image = cv2.resize(face_image, (150, 150))
+            
+                register_new_face(face_encoding, face_image)
+
+            face_labels.append(face_label)  
+
+                
+
