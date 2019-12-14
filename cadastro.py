@@ -30,8 +30,32 @@ def registrar_nova_face(face_encoding, face_image): # Adiciona nova pessoa a nos
     know_face_encodings.append(face_encoding) #Adiciona a codificação do facial ao vetor de codificações global.
 
     know_face_metadata.append({
-        "Data do cadastro": datetime.now(),
+        "data_do_cadastro": datetime.now(),
         "face_image": face_image,
-        "Matrícula": matricula,
-        "Nome": nome_aluno,
+        "datricula": matricula,
+        "nome": nome_aluno,
     })
+
+def lookup_known_face(face_encoding):
+    
+    metadata = None
+
+    if len(known_face_encodings) == 0:
+        return metadata
+
+    face_distances = face_recognition.face_distance(
+        known_face_encodings, 
+        face_encoding
+    )
+
+    best_match_index = np.argmin(face_distances)
+
+    if face_distances[best_match_index] < 0.65:
+        metadata = known_face_metadata[best_match_index]
+        metadata["data_do_cadastro"] = datetime.now()
+
+    return metadata
+
+def main_loop():
+
+    video_capture = cv2.VideoCapture(0)
