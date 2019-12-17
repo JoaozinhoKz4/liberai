@@ -94,5 +94,38 @@ def main_loop():
 
             face_labels.append(face_label)  
 
+        for (top, right, bottom, left), face_label in zip(face_locations, face_labels):
+            
+            top *= 4
+            right *= 4
+            bottom *= 4
+            left *= 4
+
+            cv2.rectangle(frame, (left,top), (right,bottom), (0,0,255), 2)
+            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            cv2.putText(frame, face_label, (left + 6, bottom - 6), cv2.FONT_HERSHEY_DUPLEX, 0.8, (255, 255, 255), 1)
+
+        cv2.imshow('Video', frame)
+
+        # Hit 'q' on the keyboard to quit!
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            salvar_faces_conhecidas()
+            break
+
+        # We need to save our known faces back to disk every so often in case something crashes.
+        if len(face_locations) > 0 and number_of_faces_since_save > 100:
+            salvar_faces_conhecidas()
+            number_of_faces_since_save = 0
+        else:
+            number_of_faces_since_save += 1
+
+    # Release handle to the webcam
+    video_capture.release()
+    cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    carregar_faces_conhecidas()
+    main_loop()
                 
 
