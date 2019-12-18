@@ -8,6 +8,7 @@ import pickle #importa o módulo pickle
 know_face_encodings = []
 know_face_metadata= []
 
+
 def salvar_faces_conhecidas():  # Define a função que salva os encodings e os metadados de cada rosto, de maneira binária, em um arquivo de dados .dat
      with open("faces_conhecidas.dat", "wb") as face_data_file: 
         face_data = [know_face_encodings, know_face_metadata] 
@@ -29,10 +30,12 @@ def registrar_nova_face(face_encoding, face_image): # Adiciona nova pessoa a nos
     
     know_face_encodings.append(face_encoding) #Adiciona a codificação do facial ao vetor de codificações global.
 
+    matricula = float(input("Insira a matricula: "))
+    nome_aluno = input("Insira nome do aluno:")
     know_face_metadata.append({
         "data_do_cadastro": datetime.now(),
         "face_image": face_image,
-        "datricula": matricula,
+        "matricula": matricula,
         "nome": nome_aluno,
     })
 
@@ -40,18 +43,18 @@ def lookup_known_face(face_encoding):
     
     metadata = None
 
-    if len(known_face_encodings) == 0:
+    if len(know_face_encodings) == 0:
         return metadata
 
     face_distances = face_recognition.face_distance(
-        known_face_encodings, 
+        know_face_encodings, 
         face_encoding
     )
 
     best_match_index = np.argmin(face_distances)
 
     if face_distances[best_match_index] < 0.65:
-        metadata = known_face_metadata[best_match_index]
+        metadata = know_face_metadata[best_match_index]
         metadata["data_do_cadastro"] = datetime.now()
 
     return metadata
@@ -111,13 +114,6 @@ def main_loop():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             salvar_faces_conhecidas()
             break
-
-        # We need to save our known faces back to disk every so often in case something crashes.
-        if len(face_locations) > 0 and number_of_faces_since_save > 100:
-            salvar_faces_conhecidas()
-            number_of_faces_since_save = 0
-        else:
-            number_of_faces_since_save += 1
 
     # Release handle to the webcam
     video_capture.release()
