@@ -65,6 +65,7 @@ def main_loop():
 
     while True:
         
+    
         ret, frame = video_capture.read()
 
         small_frame = cv2.resize(frame, (0,0), fx=0.25, fy=0.25)
@@ -84,7 +85,7 @@ def main_loop():
             if metadata is not None:
                 
                 face_label= metadata['nome']
-
+                
             
             else:
                 face_label = "Desconhecido"
