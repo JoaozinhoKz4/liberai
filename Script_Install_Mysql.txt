@@ -1,0 +1,41 @@
+Script de instalação do MySQL Linux (ubuntu)
+-  Instalar MySql
+	#sudo apt install mysql-server
+- definir senha do root ao final da instalação (1234)
+- Logar no banco como root:
+	 #mysql -p
+- Criar banco:
+	#CREATE DATABASE liberai;
+	#exit
+- Fazer restore do banco:
+	#mysql -p liberai < liberai.sql
+- Opcional (se o banco não inicializar no próximo reboot)
+	#systemctl enable mysql
+
+
+Criação das tabelas
+
+
+CREATE TABLE Person (
+id_person INT(10) AUTO_INCREMENT PRIMARY KEY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+registration VARCHAR(30) NOT NULL,
+responsible BOOLEAN NOT NULL DEFAULT FALSE,
+email VARCHAR(50),
+reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+CREATE TABLE Image_Reg (
+id_image INT(10) AUTO_INCREMENT,
+id_person INT(10),
+photo VARCHAR(256) NOT NULL,
+encoding VARCHAR(256) NOT NULL,
+reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+PRIMARY KEY(id_image, id_person),
+FOREIGN KEY (id_person)
+        REFERENCES Person (id_person)
+        ON UPDATE RESTRICT ON DELETE CASCADE
+);
+
