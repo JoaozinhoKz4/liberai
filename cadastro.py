@@ -53,7 +53,7 @@ def lookup_known_face(face_encoding):
 
     best_match_index = np.argmin(face_distances)
 
-    if face_distances[best_match_index] < 0.65:
+    if face_distances[best_match_index] < 0.55:
         metadata = know_face_metadata[best_match_index]
         metadata["data_do_cadastro"] = datetime.now()
 
@@ -84,8 +84,7 @@ def main_loop():
             
             if metadata is not None:
                 
-                face_label= metadata['nome']
-                
+                face_label= metadata['nome']             
             
             else:
                 face_label = "Desconhecido"
@@ -93,8 +92,24 @@ def main_loop():
                 top, right, bottom, left = face_location
                 face_image = small_frame[top:bottom, left:right]
                 face_image = cv2.resize(face_image, (150, 150))
+                request = input("Deseja cadastrar novo usuário?")
 
-                registrar_nova_face(face_encoding, face_image)
+                if request == "sim":
+
+                    registrar_nova_face(face_encoding,face_image)
+
+                else:
+                        
+                    print("Usuário não será cadastrado")
+                        
+                    face_label = "Desconhecido"
+
+                    top, right, bottom, left = face_location
+                    face_image = small_frame[top:bottom, left:right]
+                    face_image = cv2.resize(face_image, (150, 150))
+                break
+
+                
 
             face_labels.append(face_label)  
 
