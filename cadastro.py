@@ -107,7 +107,7 @@ def main_loop():
                     top, right, bottom, left = face_location
                     face_image = small_frame[top:bottom, left:right]
                     face_image = cv2.resize(face_image, (150, 150))
-                break
+            
 
                 
 
