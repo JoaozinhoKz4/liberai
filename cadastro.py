@@ -4,15 +4,23 @@ from datetime import datetime, timedelta #importa do módulo datetime as libs da
 import numpy as np #importa o módulo numpy como np
 import platform #importa o módulo platform
 import pickle #importa o módulo pickle
+import database as db
 
 know_face_encodings = []
 know_face_metadata= []
+data = db.database()
 
 
+#Função depreciada com o uso de BD
 def salvar_faces_conhecidas():  # Define a função que salva os encodings e os metadados de cada rosto, de maneira binária, em um arquivo de dados .dat
      with open("faces_conhecidas.dat", "wb") as face_data_file: 
         face_data = [know_face_encodings, know_face_metadata] 
         pickle.dump(face_data, face_data_file) #pickle é um módulo para manipulação de binários em python
+        #assumindo 1:1 encoding e metadata
+        count = 0
+        for dat in know_face_encodings:
+            data.write_Encoding(dat,know_face_metadata[count]['data_do_cadastro'],know_face_metadata[count]['nome'],know_face_metadata[count]['matricula'])
+            count += 1
         print("Backup realizado.")
 
 def carregar_faces_conhecidas(): # Define a função que carrega da base de dados a codificação facial e os metadados faciais
@@ -20,7 +28,11 @@ def carregar_faces_conhecidas(): # Define a função que carrega da base de dado
 
     try: # tenta abrir o arquivo
         with open("faces_conhecidas.dat", "rb") as face_data_file:
-            know_face_encodings, know_face_metadata = pickle.load(face_data_file)
+      #      know_face_encodings, know_face_metadata = pickle.load(face_data_file)
+            #Leitura do banco que carrega encoding como chave do dic e metadados como conteudos
+            data.read_ALL_Encoding()
+            know_face_encodings = data.encoding
+            know_face_metadata = data.metadata
             print("Sucesso ao importar dados.")
     except FileNotFoundError as e:
         print("Não foi possível encontrar o arquivo com dados, iniciando com um arquivo vazio.")
@@ -38,6 +50,8 @@ def registrar_nova_face(face_encoding, face_image): # Adiciona nova pessoa a nos
         "matricula": matricula,
         "nome": nome_aluno,
     })
+    data.write_Encoding(encode_A=face_encoding,photo=face_image,name=nome_aluno,register=matricula)
+    
 
 def lookup_known_face(face_encoding):
     
@@ -94,7 +108,7 @@ def main_loop():
                 face_image = cv2.resize(face_image, (150, 150))
                 request = input("Deseja cadastrar novo usuário?")
 
-                if request == "sim":
+                if (request == "sim") | (request == "s"):
 
                     registrar_nova_face(face_encoding,face_image)
 
@@ -138,6 +152,7 @@ def main_loop():
 
 if __name__ == "__main__":
     carregar_faces_conhecidas()
+    #salvar_faces_conhecidas()
     main_loop()
                 
 

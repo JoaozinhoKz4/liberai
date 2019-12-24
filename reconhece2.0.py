@@ -9,7 +9,9 @@ import urllib
 import numpy as np
 from PIL import Image
 import subprocess
+import database as db
 
+data = db.database()
 #####################################################################################################
 firebase = firebase.FirebaseApplication('https://chamadafacial.firebaseio.com/')
 client = storage.Client.from_service_account_json('C:\Users\hp\key.json')
@@ -112,7 +114,7 @@ face_encodings = face_recognition.face_encodings(img, face_locations)
 face_names = []
     
 for face_encoding in face_encodings:
-    # vê se a face é um match das face(s) conhecidas
+    # vï¿½ se a face ï¿½ um match das face(s) conhecidas
     matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
     name = "Desconhecido(a)"
 
@@ -139,7 +141,7 @@ for (top, right, bottom, left), name in zip(face_locations, face_names):
 #salva o resultado na pasta        
 cv2.imwrite("resultado.jpg",img1)       
 
-# Salvar resultados no firebase (imagem resultado já é enviada/ dados ainda precisam serem tradados)
+# Salvar resultados no firebase (imagem resultado jï¿½ ï¿½ enviada/ dados ainda precisam serem tradados)
 
 num=1
 imageBlob = bucket.blob("/")
