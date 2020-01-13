@@ -43,12 +43,13 @@ class database:
                                                 password='1234')
             if self.connection.is_connected():
                 self.cursor = self.connection.cursor()
-            self.cursor.execute("SELECT id,valid,encoding FROM Image_Reg WHERE valid IS TRUE;")
+            self.cursor.execute("SELECT registration,reg_date,encoding,photo,valid FROM Image_Reg JOIN Person ON Person.id_person=Image_Reg.id WHERE valid IS TRUE;")
             record = self.cursor.fetchall()
             for row in record:
                 #self.Storage[str(row[2])] = (row[0],1)
                 self.encoding.append(np.fromstring(str(row[2]),sep='|'))
-                self.metadata.append(row[0],row(1))
+                self.metadata.append({'data_do_cadastro':row[1],'matricula':row[0],'face_image':row[3]})
+                #"data_do_cadastro","matricula","nome"
         except Error as e:
             print("Error while connecting to MySQL", e)
         finally:
