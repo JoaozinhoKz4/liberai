@@ -4,6 +4,7 @@ from datetime import datetime, timedelta #importa do módulo datetime as libs da
 import numpy as np #importa o módulo numpy como np
 import platform #importa o módulo platform
 import pickle #importa o módulo pickle
+import requests
 
 know_face_encodings = []
 know_face_metadata= []
@@ -84,7 +85,11 @@ def main_loop():
             
             if metadata is not None:
                 
-                face_label= metadata['nome']             
+                face_label= metadata['nome']
+                #login: http://192.168.100.16/rep.html?pgCode=7&opType=1&lblId=0&lblLogin=primmesf&lblPass=121314&15840
+                # liberacao entrada : http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=5&144834
+                # liberacao saida : http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=6&144834
+                # liberacao ambos os lados: liberacao saida : http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=1&144834
             
             else:
                 face_label = "Desconhecido"
