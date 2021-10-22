@@ -12,17 +12,8 @@ know_face_metadata= []
 
 
 
-
-
-def set_interval(func, sec):
-    def func_wrapper():
-        set_interval(func, sec)
-        func()
-    t = threading.Timer(sec, func_wrapper)
-    t.start()
-    return t
-
 def comunica_catraca():
+    time.sleep(5 - time.time() % 5)
     requests.get('http://192.168.100.16/rep.html?pgCode=7&opType=1&lblId=0&lblLogin=primmesf&lblPass=121314&15840')
     requests.get('http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=5&cbxDirection=5&144834')
 
@@ -102,7 +93,7 @@ def main_loop():
             if metadata is not None:
                 
                 face_label= metadata['nome']
-                time.sleep(60 - time.time() % 60)
+                comunica_catraca()
                 # liberacao entrada : http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=5&144834
                 # liberacao saida : http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=6&144834
                 # liberacao ambos os lados: liberacao saida : http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=1&144834
