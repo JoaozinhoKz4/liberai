@@ -5,10 +5,25 @@ import numpy as np #importa o módulo numpy como np
 import platform #importa o módulo platform
 import pickle #importa o módulo pickle
 import requests
-
+import threading
 know_face_encodings = []
 know_face_metadata= []
 
+
+
+
+
+def set_interval(func, sec):
+    def func_wrapper():
+        set_interval(func, sec)
+        func()
+    t = threading.Timer(sec, func_wrapper)
+    t.start()
+    return t
+
+def comunica_catraca():
+    requests.get('http://192.168.100.16/rep.html?pgCode=7&opType=1&lblId=0&lblLogin=primmesf&lblPass=121314&15840')
+    requests.get('http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=5&cbxDirection=5&144834')
 
 def salvar_faces_conhecidas():  # Define a função que salva os encodings e os metadados de cada rosto, de maneira binária, em um arquivo de dados .dat
      with open("faces_conhecidas.dat", "wb") as face_data_file: 
@@ -86,9 +101,10 @@ def main_loop():
             if metadata is not None:
                 
                 face_label= metadata['nome']
-                r = requests.get('http://192.168.100.16/rep.html?pgCode=7&opType=1&lblId=0&lblLogin=primmesf&lblPass=121314&15840')
+                r = 
                 print(r.text)
-                requests.get('http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=5&144834')
+                set_interval(comunica_catraca, 5)
+                
                 # liberacao entrada : http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=5&144834
                 # liberacao saida : http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=6&144834
                 # liberacao ambos os lados: liberacao saida : http://192.168.100.16/rep.html?pgCode=31&opType=1&lblId=0&lblTime=10&cbxDirection=1&144834
